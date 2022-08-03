@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .container {
+            width: 600px;
+            height: 600px;
+            margin: auto;
+            margin-top: 200px;
+        }
+
+        .box-container {
+            display: flex;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid gray;
+        }
+
+        .box:hover {
+            background-color: rgba(128, 128, 128, 0.199);
+        }
+
+        .Team_Cross {
+            background-image: url('./cross.png');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .Team_Tick {
+            background-image: url('./check-mark.png');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .win {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="text-align: center;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Tic - Toc - Toe</h1>
+        <div class="box-container" id="0">
+            <div class="box num1">
+
+            </div>
+            <div class="box num2">
+
+            </div>
+            <div class="box num3">
+
+            </div>
+        </div>
+        <div class="box-container" id="3">
+            <div class="box num4">
+
+            </div>
+            <div class="box num5">
+
+            </div>
+            <div class="box num6">
+
+            </div>
+        </div>
+        <div class="box-container" id="6">
+            <div class="box num7">
+
+            </div>
+            <div class="box num8">
+
+            </div>
+            <div class="box num9">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var take = 0;
+        var combinationsPairs = [
+            ["123", "159", "147"],
+            ["258", "213"],
+            ["123", "369", "357"],
+            ["147", "456"],
+            ["159", "357", "258", "456"],
+            ["369", "456"],
+            ["147", "789", "357"],
+            ["258", "789"],
+            ["369", "789", "159"]
+        ];
+        $('.box').click(function () {
+            if (status == 0) {
+                if (!$(this).hasClass('Team_Cross') && !$(this).hasClass('Team_Tick')) {
+                    if (take == 0) {
+                        $(this).addClass('Team_Cross');
+                        take = 1;
+                        checkWinner($(this).index() + Number($(this).parent().attr('id')), 'Team_Cross');
+                    } else {
+                        take = 0;
+                        $(this).addClass('Team_Tick');
+                        checkWinner($(this).index() + Number($(this).parent().attr('id')), 'Team_Tick');
+                    }
+                }
+            } else {
+                alert('Game is Over !! Restart the Game')
+            }
+        })
+
+        function checkWinner(index, className) {
+            var pairs = combinationsPairs[index]
+            for (var i = 0; i < pairs.length; i++) {
+                var first = $(".num" + pairs[i].split('')[0]).hasClass(className);
+                var second = $(".num" + pairs[i].split('')[1]).hasClass(className);
+                var third = $(".num" + pairs[i].split('')[2]).hasClass(className);
+                if (first == true && second == true && third == true) {
+                    status = 1;
+                    setTimeout(function () {
+                        highlight(pairs[i].split('')[0], pairs[i].split('')[1], pairs[i].split('')[2]);
+                    }, 300)
+                    break;
+                }
+            }
+        }
+
+
+        function highlight(cls1, cls2, cls3) {
+            $(".num" + cls1).toggleClass('win');
+            $(".num" + cls2).toggleClass('win');
+            $(".num" + cls3).toggleClass('win');
+            setTimeout(function () {
+                highlight(cls1, cls2, cls3);
+            }, 300);
+        }
+
+    </script>
+</body>
+
+</html>
